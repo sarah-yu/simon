@@ -123,9 +123,9 @@ $('document').ready(function() {
 		}
 	}
 
-	setTimeout(function() {
-		$('.word-tile').hide()
-	}, 3000)
+	// setTimeout(function() {
+	// 	$('.word-tile').hide()
+	// }, 3000)
 
 	function createTileLevelOne() {
 		theSentence.measureWord = getWord(measureWords)
@@ -162,6 +162,7 @@ $('document').ready(function() {
 		let wbMeasureWords = []
 		let wbObjects = []
 
+		// add random answer choices to array
 		wbMeasureWords[0] = theSentence.measureWord
 		wbMeasureWords[1] = getWord(measureWords)
 		wbMeasureWords[2] = getWord(measureWords)
@@ -172,6 +173,22 @@ $('document').ready(function() {
 		wbObjects[2] = getWord(objectWords)
 		wbObjects[3] = getWord(objectWords)
 
+		// shuffle the word bank tiles
+		shuffle(wbMeasureWords)
+		shuffle(wbObjects)
+
+		function shuffle(array) {
+			for (let i = 0; i < array.length - 1; i++) {
+				let j = i + Math.floor(Math.random() * (array.length - i))
+
+				let shuffledArray = array[j]
+				array[j] = array[i]
+				array[i] = shuffledArray
+			}
+			return array
+		}
+
+		// display word bank tiles in interface
 		for (let i = 0; i < wbMeasureWords.length; i++) {
 			$('.word-bank-word-tiles')
 				.eq(0)
