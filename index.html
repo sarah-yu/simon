@@ -4,12 +4,56 @@
     <meta charset="utf-8">
     <!--  add google font -->
     <link rel="stylesheet" href="style.css">
-    <title>Simon</title>
+    <title>Simon Learns Chinese</title>
   </head>
   <body>
-    hello world
+    <header>
+      <ul>
+        <li><button>Start Over</button></li>
+        <li class="site-logo"><a href="#">Simon Learns Chinese</a></li>
+        <li><span>Score: 0</span></li>
+      </ul>
+    </header>
 
+    <main>
+      <section id="game-board">
+        <!-- display the challenge sentence -->
+        <!-- <div class="the-sentence-pos the-sentence-pos-1">
+          <div class="word-tile">
+            <span class="word-info word-pinyin">pinyin</span>
+            <span class="word-info word-cn">chinese</span>
+            <span class="word-info word-en">english</span>
+          </div>
+          <div class="the-sentence-pos-label">measure word</div>
+        </div>
+        <div class="the-sentence-pos the-sentence-pos-2">
+          <div class="word-tile">
+            <span class="word-info word-pinyin">pinyin</span>
+            <span class="word-info word-cn">chinese</span>
+            <span class="word-info word-en">english</span>
+          </div>
+          <div class="the-sentence-pos-label">object</div>
+        </div> -->
+      </section>
+
+      <section id="word-bank">
+        <div class="word-bank-pos">
+          <div class="word-bank-pos-label">measure words</div>
+          <div class="word-bank-word-tiles">
+          </div>
+        </div>
+        <div class="word-bank-pos">
+          <div class="word-bank-pos-label">object words</div>
+          <div class="word-bank-word-tiles">
+            <!-- <div class="word-bank-word-tile" id="wb-0"></div> -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
     <script src="js/word.js"></script>
     <script src="js/sentence.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
