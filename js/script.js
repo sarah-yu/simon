@@ -110,7 +110,7 @@ $('document').ready(function() {
 		level: 3,
 		pos: [subjectWords, verbs, adjectives, objectWords],
 		posProperty: ['subject', 'verb', 'adjective', 'object'],
-		posGBLabel: ['subject', 'verb', 'adjetive', 'object'],
+		posGBLabel: ['subject', 'verb', 'adjective', 'object'],
 		posWBLabel: ['subject words', 'verbs', 'adjectives', 'object words']
 	}
 
@@ -182,11 +182,23 @@ $('document').ready(function() {
 			theSentence[addPos] = getWord(level.pos[i])
 			console.log(`createTheSentence ${i}: ${theSentence[addPos].cn}`)
 		}
+		createWordTiles(level)
 	}
 
+	// generate random word for sentence creation
 	function getWord(array) {
-		// generate random word for sentence creation
 		let i = Math.floor(Math.random() * array.length)
 		return array[i]
+	}
+
+	function createWordTiles(level) {
+		for (let i = 0; i < level.pos.length; i++) {
+			let addPos = level.posProperty[i]
+			$('.the-sentence-pos').eq([i]).prepend(`<div class="word-tile">
+				<span class="word-info word-pinyin">${theSentence[addPos].pinyin}</span>
+				<span class="word-info word-cn">${theSentence[addPos].cn}</span>
+				<span class="word-info word-en">${theSentence[addPos].en}</span>
+				</div>`)
+		}
 	}
 })
