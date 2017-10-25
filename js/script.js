@@ -1,10 +1,12 @@
 $('document').ready(function() {
-	const words = []
-	// variable to simulate start for testing purposes
-	let start = true
-	let level = 1
+	// all the variables
+
+	// from the DOM
 	let gameBoard = $('#game-board')
 	let wordBank = $('#word-bank')
+
+	// all the words
+	const words = []
 
 	// partOfSpeech: measureWord
 	words.push(yiGe)
@@ -87,249 +89,104 @@ $('document').ready(function() {
 		return word.partOfSpeech === 'adjective'
 	})
 
+	// organized info for each level
+	let level1 = {
+		level: 1,
+		pos: [measureWords, objectWords],
+		posProperty: ['measureWord', 'object'],
+		posGBLabel: ['measure word', 'object'],
+		posWBLabel: ['measure words', 'object words']
+	}
+
+	let level2 = {
+		level: 2,
+		pos: [subjectWords, verbs, objectWords],
+		posProperty: ['subject', 'verb', 'object'],
+		posGBLabel: ['subject', 'verb', 'object'],
+		posWBLabel: ['subject words', 'verbs', 'object words']
+	}
+
+	let level3 = {
+		level: 3,
+		pos: [subjectWords, verbs, adjectives, objectWords],
+		posProperty: ['subject', 'verb', 'adjective', 'object'],
+		posGBLabel: ['subject', 'verb', 'adjetive', 'object'],
+		posWBLabel: ['subject words', 'verbs', 'adjectives', 'object words']
+	}
+
+	// game start page
+	gameBoard.append(
+		'<div class="welcome-message"><p>Welcome to Simon Learns Chinese!</p><p>Select a level to start the game.</p></div>'
+	)
+
+	wordBank.append(
+		'<div class="level-buttons"><button id="level1">Level 1</button><button id="level2">Level 2</button><button id="level3">Level 3</button></div>'
+	)
+
+	$('.level-buttons')
+		.children()
+		.on('click', e => {
+			let userLevel = e.target.id
+			// userLevel: level1, level2, or level3
+			startGame(userLevel)
+		})
+
+	function startGame(userLevel) {
+		switch (userLevel) {
+			case 'level1':
+				startLevel(level1)
+				break
+			case 'level2':
+				startLevel(level2)
+				break
+			case 'level3':
+				startLevel(level3)
+				break
+		}
+	}
+
+	function startLevel(level) {
+		// log to check correct current level
+		console.log(`startLevel: current level: ${level.level}`)
+		removeStartPage()
+		createGameBoard(level)
+	}
+
+	function removeStartPage() {
+		$('.welcome-message').remove()
+		$('.level-buttons').remove()
+	}
+
+	function createGameBoard(level) {
+		console.log(
+			`createGameBoard: this is level ${level.level} and there's ${level.pos
+				.length} pos`
+		)
+		for (let i = 0; i < level.pos.length; i++) {
+			gameBoard.append(`<div class="the-sentence-pos"></div>`)
+			$('.the-sentence-pos')
+				.eq([i])
+				.append(
+					`<div class="the-sentence-pos-label">${level.posGBLabel[i]}</div>`
+				)
+		}
+		createTheSentence(level)
+	}
+
+	function createTheSentence(level) {
+		console.log(
+			`createTheSentence: level ${level.level} successfully carried over!`
+		)
+		for (let i = 0; i < level.pos.length; i++) {
+			let addPos = level.posProperty[i]
+			theSentence[addPos] = getWord(level.pos[i])
+			console.log(`createTheSentence ${i}: ${theSentence[addPos].cn}`)
+		}
+	}
+
 	function getWord(array) {
 		// generate random word for sentence creation
 		let i = Math.floor(Math.random() * array.length)
 		return array[i]
 	}
-
-	if (start) {
-		createWordTile()
-	}
-
-	// function createGameBoard(level) {
-	// 	// build game board based on level (number of pos)
-	// 	for (let i = 0; i < level.length; i++) {
-	// 		gameBoard.append(
-	// 			`<div class='the-sentence-pos the-sentence-pos-${i}'>
-	//         <div class='the-sentence-pos-label'>${level[i]}</div>
-	//       </div>`
-	// 		)
-	// 	}
-	// }
-
-	function createWordTile() {
-		switch (level) {
-			case 1:
-				createTileLevelOne()
-				createWordBankLevelOne()
-				break
-			case 2:
-				createTileLevelTwo()
-				break
-			case 3:
-				createTileLevelThree()
-				break
-		}
-	}
-
-	setTimeout(function() {
-		// $('.word-tile').hide()
-		$('.word-tile')
-			.children()
-			.text('')
-	}, 3000)
-
-	function createTileLevelOne() {
-		theSentence.measureWord = getWord(measureWords)
-		theSentence.object = getWord(objectWords)
-
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-1"></div>`)
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-2"></div>`)
-
-		$('.the-sentence-pos').append(
-			`<div class="word-tile">
-        <span class="word-info word-pinyin"></span>
-        <span class="word-info word-cn"></span>
-        <span class="word-info word-en"></span>
-      </div>`
-		)
-
-		$('.the-sentence-pos')
-			.eq(0)
-			.append(`<div class="the-sentence-pos-label">measure word</div>`)
-		$('.the-sentence-pos')
-			.eq(1)
-			.append(`<div class="the-sentence-pos-label">object</div>`)
-
-		$('.the-sentence-pos-1 .word-pinyin').text(theSentence.measureWord.pinyin)
-		$('.the-sentence-pos-1 .word-cn').text(theSentence.measureWord.cn)
-		$('.the-sentence-pos-1 .word-en').text(theSentence.measureWord.en)
-
-		$('.the-sentence-pos-2 .word-pinyin').text(theSentence.object.pinyin)
-		$('.the-sentence-pos-2 .word-cn').text(theSentence.object.cn)
-		$('.the-sentence-pos-2 .word-en').text(theSentence.object.en)
-	}
-
-	function createWordBankLevelOne() {
-		let wbMeasureWords = []
-		let wbObjects = []
-
-		// add random answer choices to array
-		wbMeasureWords[0] = theSentence.measureWord
-		wbMeasureWords[1] = getWord(measureWords)
-		wbMeasureWords[2] = getWord(measureWords)
-		wbMeasureWords[3] = getWord(measureWords)
-
-		wbObjects[0] = theSentence.object
-		wbObjects[1] = getWord(objectWords)
-		wbObjects[2] = getWord(objectWords)
-		wbObjects[3] = getWord(objectWords)
-
-		// shuffle the word bank tiles
-		shuffle(wbMeasureWords)
-		shuffle(wbObjects)
-
-		function shuffle(array) {
-			for (let i = 0; i < array.length - 1; i++) {
-				let j = i + Math.floor(Math.random() * (array.length - i))
-
-				let shuffledArray = array[j]
-				array[j] = array[i]
-				array[i] = shuffledArray
-			}
-			return array
-		}
-
-		// display word bank tiles in interface
-		for (let i = 0; i < wbMeasureWords.length; i++) {
-			$('.word-bank-word-tiles')
-				.eq(0)
-				.append(
-					`<div class="word-bank-word-tile" data-pos="measureWord">${wbMeasureWords[
-						i
-					].cn}</div>`
-				)
-		}
-
-		for (let i = 0; i < wbObjects.length; i++) {
-			$('.word-bank-word-tiles')
-				.eq(1)
-				.append(
-					`<div class="word-bank-word-tile" data-pos="object">${wbObjects[i]
-						.cn}</div>`
-				)
-		}
-
-		// event listener on word bank word tiles
-		$('.word-bank-word-tile').on('click', e => {
-			// console.log($(e.target).text())
-			// console.log($(e.target).data('pos'))
-			$('.word-bank-word-tile').css('visibility', 'visible')
-			$('.word-bank-word-tile').removeClass('active')
-
-			// the tile selected by user is displayed on game board
-			$(e.target).css('visibility', 'hidden')
-			$(e.target).addClass('active')
-
-			// user can select one tile at a time
-			if ($(e.target).hasClass('active')) {
-				if ($(e.target).data('pos') === 'measureWord') {
-					$('.the-sentence-pos-1 .word-cn').text($(e.target).text())
-				} else if ($(e.target).data('pos') === 'object') {
-					$('.the-sentence-pos-2 .word-cn').text($(e.target).text())
-				}
-			}
-		})
-	}
-
-	function createTileLevelTwo() {
-		theSentence.subject = getWord(subjectWords)
-		theSentence.verb = getWord(verbs)
-		theSentence.object = getWord(objectWords)
-
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-1"></div>`)
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-2"></div>`)
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-3"></div>`)
-
-		$('.the-sentence-pos').append(
-			`<div class="word-tile">
-        <span class="word-info word-pinyin"></span>
-        <span class="word-info word-cn"></span>
-        <span class="word-info word-en"></span>
-      </div>`
-		)
-
-		$('.the-sentence-pos')
-			.eq(0)
-			.append(`<div class="the-sentence-pos-label">subject</div>`)
-		$('.the-sentence-pos')
-			.eq(1)
-			.append(`<div class="the-sentence-pos-label">verb</div>`)
-		$('.the-sentence-pos')
-			.eq(2)
-			.append(`<div class="the-sentence-pos-label">object</div>`)
-
-		$('.the-sentence-pos-1 .word-pinyin').text(theSentence.subject.pinyin)
-		$('.the-sentence-pos-1 .word-cn').text(theSentence.subject.cn)
-		$('.the-sentence-pos-1 .word-en').text(theSentence.subject.en)
-
-		$('.the-sentence-pos-2 .word-pinyin').text(theSentence.verb.pinyin)
-		$('.the-sentence-pos-2 .word-cn').text(theSentence.verb.cn)
-		$('.the-sentence-pos-2 .word-en').text(theSentence.verb.en)
-
-		$('.the-sentence-pos-3 .word-pinyin').text(theSentence.object.pinyin)
-		$('.the-sentence-pos-3 .word-cn').text(theSentence.object.cn)
-		$('.the-sentence-pos-3 .word-en').text(theSentence.object.en)
-	}
-
-	function createTileLevelThree() {
-		theSentence.subject = getWord(subjectWords)
-		theSentence.verb = getWord(verbs)
-		theSentence.adjective = getWord(adjectives)
-		theSentence.object = getWord(objectWords)
-
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-1"></div>`)
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-2"></div>`)
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-3"></div>`)
-		gameBoard.append(`<div class="the-sentence-pos the-sentence-pos-4"></div>`)
-
-		$('.the-sentence-pos').append(
-			`<div class="word-tile">
-        <span class="word-info word-pinyin"></span>
-        <span class="word-info word-cn"></span>
-        <span class="word-info word-en"></span>
-      </div>`
-		)
-
-		$('.the-sentence-pos')
-			.eq(0)
-			.append(`<div class="the-sentence-pos-label">subject</div>`)
-		$('.the-sentence-pos')
-			.eq(1)
-			.append(`<div class="the-sentence-pos-label">verb</div>`)
-		$('.the-sentence-pos')
-			.eq(2)
-			.append(`<div class="the-sentence-pos-label">adjective</div>`)
-		$('.the-sentence-pos')
-			.eq(3)
-			.append(`<div class="the-sentence-pos-label">object</div>`)
-
-		$('.the-sentence-pos-1 .word-pinyin').text(theSentence.subject.pinyin)
-		$('.the-sentence-pos-1 .word-cn').text(theSentence.subject.cn)
-		$('.the-sentence-pos-1 .word-en').text(theSentence.subject.en)
-
-		$('.the-sentence-pos-2 .word-pinyin').text(theSentence.verb.pinyin)
-		$('.the-sentence-pos-2 .word-cn').text(theSentence.verb.cn)
-		$('.the-sentence-pos-2 .word-en').text(theSentence.verb.en)
-
-		$('.the-sentence-pos-3 .word-pinyin').text(theSentence.adjective.pinyin)
-		$('.the-sentence-pos-3 .word-cn').text(theSentence.adjective.cn)
-		$('.the-sentence-pos-3 .word-en').text(theSentence.adjective.en)
-
-		$('.the-sentence-pos-4 .word-pinyin').text(theSentence.object.pinyin)
-		$('.the-sentence-pos-4 .word-cn').text(theSentence.object.cn)
-		$('.the-sentence-pos-4 .word-en').text(theSentence.object.en)
-	}
-
-	// function createWordBank(level) {
-	// 	// build word bank based on level (number of pos)
-	// 	for (let i = 0; i < level.length; i++) {
-	// 		wordBank.append(
-	// 			`<div class='word-bank-pos'>
-	//         <div class="word-bank-pos-label">${level[i]}</div>
-	//       </div>`
-	// 		)
-	// 	}
-	// }
 })

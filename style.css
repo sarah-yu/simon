@@ -1,6 +1,6 @@
 html,
 body {
-	font-family: sans-serif;
+	font-family: 'Karla', sans-serif;
 	height: 100%;
 }
 
@@ -13,13 +13,6 @@ body {
 
 header {
 	flex: 0 0 90px;
-	/*background: pink;*/
-}
-
-main {
-	flex: 1 0 auto;
-	display: flex;
-	flex-direction: column;
 }
 
 ul {
@@ -37,35 +30,47 @@ li {
 	margin-right: auto;
 }
 
-#game-board,
-#word-bank {
+main {
+	flex: 1 0 auto;
 	display: flex;
-	flex-direction: row;
-	justify-content: center;
+	flex-direction: column;
 }
 
 #game-board {
 	flex: 1 1 0;
-	/*background: orange;*/
 	padding: 0 30px;
+	display: flex;
+	flex-direction: row;
 	align-items: center;
+	justify-content: center;
+}
+
+.welcome-message {
+	font-size: 40px;
 }
 
 #word-bank {
 	flex: 2 1 0;
-	padding: 40px 30px;
-	align-items: flex-start;
+	padding: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: center;
+}
+
+.level-buttons button {
+	margin: 30px;
 }
 
 .the-sentence-pos {
 	flex: 0 0 25%;
-	/*background: green;*/
 	min-height: 200px;
 	margin: 10px 5px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	border: 1px solid blue;
 }
 
 .word-tile {
@@ -74,7 +79,7 @@ li {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	height: 100px;
+	height: 90px;
 	margin: 10px 0;
 	/*padding: 10px;*/
 }
@@ -103,7 +108,7 @@ li {
 	letter-spacing: 6px;
 }
 
-.word-bank-pos {
+.wb-pos {
 	/* dynamically update % based on number of pos */
 	flex: 0 0 50%;
 	padding: 0 5px;
@@ -112,20 +117,20 @@ li {
 	flex-direction: column;
 }
 
-.word-bank-pos-label {
+.wb-pos-label {
 	flex: 1 1 0;
 	border-top: 5px solid #666;
 }
 
-.word-bank-word-tiles {
+.wb-word-tiles {
 	flex: 9 1 0;
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
 }
 
-.word-bank-word-tile {
-	border: 1px solid blue;
+.wb-word-tile {
+	border: 1px solid #666;
 	height: 150px;
 	width: 200px;
 	margin: 20px;
