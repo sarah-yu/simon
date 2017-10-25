@@ -200,5 +200,56 @@ $('document').ready(function() {
 				<span class="word-info word-en">${theSentence[addPos].en}</span>
 				</div>`)
 		}
+		hideWordTiles(level)
+	}
+
+	function hideWordTiles(level) {
+		setTimeout(() => {
+			$('.word-tile').css('visibility', 'hidden')
+			createWordBank(level)
+		}, 3000)
+	}
+
+	function createWordBank(level) {
+		console.log(
+			`createWordBank: creating word bank for level ${level.level} now`
+		)
+
+		for (let i = 0; i < level.pos.length; i++) {
+			wordBank.append(`<div class="wb-pos">
+			<div class="wb-pos-label">${level.posWBLabel[i]}</div>
+			</div>`)
+			$('.wb-pos-label').append('<div class="wb-tiles"></div>')
+		}
+
+		// format word bank columns
+		if (level.level === 2) {
+			$('.wb-pos').css('flex', '0 0 33.33%')
+		} else if (level.level === 3) {
+			$('.wb-pos').css('flex', '0 0 25%')
+		}
+		createWBArr(level)
+	}
+
+	function createWBArr(level) {
+		console.log(
+			`createWBTiles: creating word bank tiles for level ${level.level}`
+		)
+		for (let i = 0; i < level.pos.length; i++) {
+			// create arrays to hold work bank tiles by pos
+			window['wb' + level.posProperty[i]] = []
+			console.log(level.posProperty[i])
+		}
+		createWBTiles(level)
+	}
+
+	function createWBTiles(level) {
+		console.log(`createWBTiles: still on level ${level.level}`)
+		for (let i = 0; i < level.pos.length; i++) {
+			for (let j = 0; j < 4; j++) {
+				// push 4 random words into wb pos array from corresponding pos
+				window['wb' + level.posProperty[i]].push(getWord(level.pos[i]))
+			}
+		}
 	}
 })
