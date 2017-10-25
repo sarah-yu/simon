@@ -123,9 +123,12 @@ $('document').ready(function() {
 		}
 	}
 
-	// setTimeout(function() {
-	// 	$('.word-tile').hide()
-	// }, 3000)
+	setTimeout(function() {
+		// $('.word-tile').hide()
+		$('.word-tile')
+			.children()
+			.text('')
+	}, 3000)
 
 	function createTileLevelOne() {
 		theSentence.measureWord = getWord(measureWords)
@@ -193,8 +196,9 @@ $('document').ready(function() {
 			$('.word-bank-word-tiles')
 				.eq(0)
 				.append(
-					`<div class="word-bank-word-tile" id="wb-${i}">${wbMeasureWords[i]
-						.cn}</div>`
+					`<div class="word-bank-word-tile" data-pos="measureWord">${wbMeasureWords[
+						i
+					].cn}</div>`
 				)
 		}
 
@@ -202,10 +206,31 @@ $('document').ready(function() {
 			$('.word-bank-word-tiles')
 				.eq(1)
 				.append(
-					`<div class="word-bank-word-tile" id="wb-${i}">${wbObjects[i]
+					`<div class="word-bank-word-tile" data-pos="object">${wbObjects[i]
 						.cn}</div>`
 				)
 		}
+
+		// event listener on word bank word tiles
+		$('.word-bank-word-tile').on('click', e => {
+			// console.log($(e.target).text())
+			// console.log($(e.target).data('pos'))
+			$('.word-bank-word-tile').css('visibility', 'visible')
+			$('.word-bank-word-tile').removeClass('active')
+
+			// the tile selected by user is displayed on game board
+			$(e.target).css('visibility', 'hidden')
+			$(e.target).addClass('active')
+
+			// user can select one tile at a time
+			if ($(e.target).hasClass('active')) {
+				if ($(e.target).data('pos') === 'measureWord') {
+					$('.the-sentence-pos-1 .word-cn').text($(e.target).text())
+				} else if ($(e.target).data('pos') === 'object') {
+					$('.the-sentence-pos-2 .word-cn').text($(e.target).text())
+				}
+			}
+		})
 	}
 
 	function createTileLevelTwo() {
