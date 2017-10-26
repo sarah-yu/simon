@@ -1,9 +1,14 @@
 $('document').ready(function() {
 	// all the variables
+	let score = 0
 
 	// from the DOM
 	let gameBoard = $('#game-board')
 	let wordBank = $('#word-bank')
+	let startPageEl = $('.start-page')
+	let resetScoreButton = $('#reset-score')
+	let currentLevelEl = $('#current-level')
+	let scoreEl = $('#score')
 
 	// all the words
 	const words = []
@@ -115,21 +120,38 @@ $('document').ready(function() {
 	}
 
 	// game start page
-	gameBoard.append(
-		'<div class="welcome-message"><p>Welcome to Simon Learns Chinese!</p><p>Select a level to start the game.</p></div>'
-	)
+	startPage()
 
-	wordBank.append(
-		'<div class="level-buttons"><button id="level1">Level 1</button><button id="level2">Level 2</button><button id="level3">Level 3</button></div>'
-	)
+	startPageEl.on('click', () => {
+		clearTimeout(timeToGuess)
+		currentLevelEl.text('')
+		clearBoard()
+		removeStartPage()
+		startPage()
+	})
 
-	$('.level-buttons')
-		.children()
-		.on('click', e => {
-			let userLevel = e.target.id
-			// userLevel: level1, level2, or level3
-			startGame(userLevel)
-		})
+	resetScoreButton.on('click', () => {
+		score = 0
+		scoreEl.text(0)
+	})
+
+	function startPage() {
+		gameBoard.append(
+			'<div class="welcome-message"><p>Welcome to Simon Learns Chinese!</p><p>Select a level to start the game.</p></div>'
+		)
+
+		wordBank.append(
+			'<div class="level-buttons"><button id="level1">Level 1</button><button id="level2">Level 2</button><button id="level3">Level 3</button></div>'
+		)
+
+		$('.level-buttons')
+			.children()
+			.on('click', e => {
+				let userLevel = e.target.id
+				// userLevel: level1, level2, or level3
+				startGame(userLevel)
+			})
+	}
 
 	function startGame(userLevel) {
 		switch (userLevel) {
@@ -148,6 +170,7 @@ $('document').ready(function() {
 	function startLevel(level) {
 		// log to check correct current level
 		console.log(`startLevel: current level: ${level.level}`)
+		currentLevelEl.text(`Level: ${level.level}`)
 		removeStartPage()
 		createGameBoard(level)
 	}
@@ -204,10 +227,10 @@ $('document').ready(function() {
 	}
 
 	function hideWordTiles(level) {
-		setTimeout(() => {
+		timeToGuess = setTimeout(() => {
 			$('.word-tile').css('visibility', 'hidden')
 			createWordBank(level)
-		}, 1000)
+		}, 3000)
 	}
 
 	function createWordBank(level) {
@@ -311,6 +334,7 @@ $('document').ready(function() {
 			// add event listener on wb tiles by pos
 			let wbTilesByPos = `div[data-pos=${addPos}]`
 			$(wbTilesByPos).on('click', e => {
+				$('.word-tile').css('visibility', 'hidden')
 				$(wbTilesByPos).css('visibility', 'visible')
 				$(wbTilesByPos).removeClass('active')
 
@@ -318,8 +342,96 @@ $('document').ready(function() {
 				$(e.target).css('visibility', 'hidden')
 				$(e.target).addClass('active')
 
+				// check if click is grabbing the right tile and info
 				console.log($(e.target).text())
+				// console.log($(e.target).data('pos'))
+				// console.log(`wb${$(e.target).data('pos')}`)
+
+				// via data-pos, access array corresponding to pos of user clicked word
+				// find word object the clicked tile belongs to
+				let userClickWord = $(e.target).text()
+				let userClickWordPos = $(e.target).data('pos')
+				console.log(`userClickWordPos: ${userClickWordPos}`)
+				console.log(window['wb' + userClickWordPos])
+
+				let whereToDisplay = level.posProperty.indexOf(userClickWordPos)
+				console.log(`where to display: ${whereToDisplay} (${userClickWordPos})`)
+				// display user's guess on game board
+				$('.word-cn')
+					.eq(whereToDisplay)
+					.css('visibility', 'visible')
+					.text(userClickWord)
+
+				// filter through the corresponding array to for the clicked word object
+				findUserClickWord = window['wb' + userClickWordPos].filter(word => {
+					return word.cn === userClickWord
+				})
+				console.log(`findUserClickWord: ${findUserClickWord}`)
+
+				// add the word to userSentence
+				userSentence[userClickWordPos] = findUserClickWord
+
+				checkSentence(level)
 			})
 		}
+	}
+
+	// check userSentence against theSentence
+	function checkSentence(level) {
+		let count = 0
+		if (
+			userSentence.measureWord !== undefined &&
+			userSentence.measureWord[0] === theSentence.measureWord
+		) {
+			count += 1
+		}
+		if (
+			userSentence.subject !== undefined &&
+			userSentence.subject[0] === theSentence.subject
+		) {
+			count += 1
+		}
+		if (
+			userSentence.verb !== undefined &&
+			userSentence.verb[0] === theSentence.verb
+		) {
+			count += 1
+		}
+		if (
+			userSentence.adjective !== undefined &&
+			userSentence.adjective[0] === theSentence.adjective
+		) {
+			count += 1
+		}
+		if (
+			userSentence.object !== undefined &&
+			userSentence.object[0] === theSentence.object
+		) {
+			count += 1
+		}
+		if (count === level.pos.length) {
+			console.log('user created the right sentence!')
+			score += 1
+			scoreEl.text(score)
+			clearBoard()
+			startLevel(level)
+		} else {
+			console.log('user must try again')
+		}
+	}
+
+	function clearBoard() {
+		clearTheSentence()
+		clearUserSentence()
+		$('.the-sentence-pos').remove()
+		$('.wb-pos').remove()
+	}
+
+	function clearTheSentence() {
+		theSentence = new Sentence()
+	}
+
+	function clearUserSentence() {
+		userSentence = new Sentence()
 	}
 })

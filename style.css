@@ -13,12 +13,28 @@ body {
 
 header {
 	flex: 0 0 90px;
+	border-bottom: 1px solid #666;
+}
+
+button {
+	background: #fff;
+	border: 1px solid #000;
+	font-family: 'Karla', sans-serif;
+	font-size: 16px;
+	outline: none;
+	padding: 8px 16px;
+}
+
+button:hover {
+	background: #000;
+	color: #fff;
 }
 
 ul {
 	list-style: none;
 	padding: 0;
 	display: flex;
+	align-items: center;
 }
 
 li {
@@ -26,8 +42,14 @@ li {
 }
 
 .site-logo {
+	font-size: 28px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
 }
 
 main {
@@ -64,24 +86,22 @@ main {
 
 .the-sentence-pos {
 	flex: 0 0 25%;
-	min-height: 200px;
+	height: 200px;
 	margin: 10px 5px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	border: 1px solid blue;
 }
 
 .word-tile {
-	flex: 1 1 0;
+	flex: 0 0 150px;
 	border: 1px solid #666;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	height: 90px;
 	margin: 10px 0;
-	/*padding: 10px;*/
 }
 
 .the-sentence-pos-label {
@@ -122,16 +142,18 @@ main {
 	border-top: 5px solid #666;
 }
 
-.wb-word-tiles {
+.wb-tiles {
 	flex: 9 1 0;
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: center;
+	align-items: center;
+	justify-content: space-between;
+	background: pink;
 }
 
-.wb-word-tile {
+.wb-tile {
 	border: 1px solid #666;
-	height: 150px;
+	height: 300px;
 	width: 200px;
 	margin: 20px;
 }

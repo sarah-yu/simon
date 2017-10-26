@@ -6,12 +6,12 @@ class Sentence {
 		this.adjective = adjective
 		this.object = object
 	}
-	isEqual(userSentence) {
-		userSentence.measureWord === theSentence.measureWord &&
-			userSentence.subject === theSentence.subject &&
-			userSentence.verb === theSentence.verb &&
-			userSentence.adjective === theSentence.adjective &&
-			userSentence.object === theSentence.object
+	isEqual() {
+		userSentence.measureWord[0] === this.measureWord &&
+			userSentence.subject[0] === this.subject &&
+			userSentence.verb[0] === this.verb &&
+			userSentence.adjective[0] === this.adjective &&
+			userSentence.object[0] === this.object
 	}
 }
 

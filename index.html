@@ -10,9 +10,11 @@
   <body>
     <header>
       <ul>
-        <li><button>Start Over</button></li>
-        <li class="site-logo"><a href="#">Simon Learns Chinese</a></li>
-        <li><span>Score: 0</span></li>
+        <li><button class="start-page">Start Page</button></li>
+        <li id="current-level"></li>
+        <li class="site-logo start-page"><a href="#">Simon Learns Chinese</a></li>
+        <li>Score: <span id="score">0</span></li>
+        <li><button id="reset-score">Reset Score</button></li>
       </ul>
     </header>
 
@@ -20,23 +22,18 @@
       <section id="game-board">
         <!-- <div class="the-sentence-pos">
           <div class="word-tile">
-            <span class="word-info word-pinyin">pinyin</span>
-            <span class="word-info word-cn">chinese</span>
-            <span class="word-info word-en">english</span>
+            <span class="word-info word-pinyin"></span>
+            <span class="word-info word-cn"></span>
+            <span class="word-info word-en"></span>
           </div>
-          <div class="the-sentence-pos-label">measure word</div>
+          <div class="the-sentence-pos-label"></div>
         </div> -->
       </section>
 
       <section id="word-bank">
         <!-- <div class="wb-pos">
-          <div class="wb-pos-label">measure words</div>
-          <div class="wb-word-tiles">
-          </div>
-        </div>
-        <div class="wb-pos">
-          <div class="wb-pos-label">object words</div>
-          <div class="wb-word-tiles">
+          <div class="wb-pos-label"></div>
+          <div class="wb-tiles">
           </div>
         </div> -->
       </section>
