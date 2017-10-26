@@ -207,7 +207,7 @@ $('document').ready(function() {
 		setTimeout(() => {
 			$('.word-tile').css('visibility', 'hidden')
 			createWordBank(level)
-		}, 3000)
+		}, 1000)
 	}
 
 	function createWordBank(level) {
@@ -236,19 +236,68 @@ $('document').ready(function() {
 			`createWBTiles: creating word bank tiles for level ${level.level}`
 		)
 		for (let i = 0; i < level.pos.length; i++) {
-			// create arrays to hold work bank tiles by pos
+			// create arrays to hold word bank tiles by pos
 			window['wb' + level.posProperty[i]] = []
 			console.log(level.posProperty[i])
 		}
-		createWBTiles(level)
+		createWBTilesRightWord(level)
 	}
 
-	function createWBTiles(level) {
+	function createWBTilesRightWord(level) {
 		console.log(`createWBTiles: still on level ${level.level}`)
 		for (let i = 0; i < level.pos.length; i++) {
-			for (let j = 0; j < 4; j++) {
-				// push 4 random words into wb pos array from corresponding pos
-				window['wb' + level.posProperty[i]].push(getWord(level.pos[i]))
+			let addPos = level.posProperty[i]
+			let theRightWord = theSentence[addPos]
+			console.log(`the right word is: ${theRightWord.cn}`)
+			// add the right word into 0 position of wb pos array
+			window['wb' + addPos][0] = theRightWord
+
+			// slice the right from word from the pos array
+			window['shuffleWb' + addPos] = level.pos[i].slice()
+			window['shuffleWb' + addPos].splice(
+				window['shuffleWb' + addPos].indexOf(theRightWord),
+				1
+			)
+			// push 3 random words to wb pos array
+			getRandomTiles(window['shuffleWb' + addPos], 3)
+			for (let j = 0; j < shuffledArray.length; j++) {
+				window['wb' + addPos].push(shuffledArray[j])
+			}
+			// shuffle full wb pos array one more time
+			getRandomTiles(window['wb' + addPos], 4)
+			// assign shuffled array back to wb pos array
+			window['wb' + addPos] = shuffledArray
+			// now ready for display in word bank!
+		}
+		displayWBTiles(level)
+	}
+
+	function getRandomTiles(array, size) {
+		let shuffled = array.slice(0)
+		let i = array.length
+		let temp
+		let index
+		while (i--) {
+			index = Math.floor((i + 1) * Math.random())
+			temp = shuffled[index]
+			shuffled[index] = shuffled[i]
+			shuffled[i] = temp
+		}
+		shuffledArray = shuffled.slice(0, size)
+		return shuffledArray
+	}
+
+	function displayWBTiles(level) {
+		for (let i = 0; i < level.pos.length; i++) {
+			let addPos = level.posProperty[i]
+			for (let j = 0; j < window['wb' + addPos].length; j++) {
+				$('.wb-pos')
+					.eq([i])
+					.append(
+						`<div class="wb-tile" data-pos="${level.posProperty[i]}">${window[
+							'wb' + addPos
+						][j].cn}</div>`
+					)
 			}
 		}
 	}
