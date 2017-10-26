@@ -138,7 +138,7 @@ $('document').ready(function() {
 
 	function startPage() {
 		gameBoard.append(
-			'<div class="welcome-message"><p>Welcome to Simon Learns Chinese!</p><p>Select a level to start the game.</p></div>'
+			'<div class="welcome-message"><p>Test your memory skills while learning Chinese!</p><p>Select a level to start the game.</p></div>'
 		)
 
 		wordBank.append(

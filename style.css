@@ -1,5 +1,6 @@
 html,
 body {
+	color: #3a3a3b;
 	font-family: 'Karla', sans-serif;
 	height: 100%;
 }
@@ -11,9 +12,10 @@ body {
 	padding: 0 40px;
 }
 
+/*---------- header ----------*/
 header {
 	flex: 0 0 90px;
-	border-bottom: 1px solid #666;
+	border-bottom: 1px solid #eee;
 }
 
 ul {
@@ -29,8 +31,11 @@ li {
 }
 
 button {
-	background: #fff;
-	border: 1px solid #000;
+	color: #fff;
+	background: #cd6155;
+	border: 0;
+	border-radius: 4px;
+	cursor: pointer;
 	font-family: 'Karla', sans-serif;
 	font-size: 16px;
 	outline: none;
@@ -38,8 +43,18 @@ button {
 }
 
 button:hover {
-	background: #000;
+	background: #d8786f;
 	color: #fff;
+}
+
+header button {
+	background: #fff;
+	border: 1px solid #3a3a3b;
+	color: #3a3a3b;
+}
+
+header button:hover {
+	border: 1px solid #d8786f;
 }
 
 .game-info {
@@ -49,33 +64,46 @@ button:hover {
 
 .site-logo {
 	font-size: 28px;
+	font-weight: 700;
 	margin-left: auto;
 	margin-right: auto;
 	width: auto;
 }
 
 .site-logo a {
-	color: #000;
+	color: #3a3a3b;
 	text-decoration: none;
 }
 
+/*---------- main ----------*/
 main {
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
 }
 
+/*---------- start page ----------*/
+.welcome-message {
+	font-size: 40px;
+	margin-top: 40px;
+}
+
+.level-buttons button {
+	font-size: 20px;
+	font-weight: 400;
+	margin: 80px 30px;
+	padding: 10px 26px;
+}
+
+/*---------- game board ----------*/
 #game-board {
 	flex: 1 0 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	margin-top: 80px;
 	padding: 0 30px;
-}
-
-.welcome-message {
-	font-size: 40px;
 }
 
 .the-sentence-pos {
@@ -92,14 +120,13 @@ main {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	border: 1px solid #666;
+	border: 1px solid #eee;
 	height: 120px;
 	margin: 10px 0;
 }
 
 .the-sentence-pos-label,
 .wb-pos-label {
-	color: #666;
 	font-size: 14px;
 	letter-spacing: 1px;
 	padding: 10px 0;
@@ -108,7 +135,7 @@ main {
 
 .the-sentence-pos-label {
 	flex: 0 0 20px;
-	border-top: 5px solid #666;
+	border-top: 1px solid #eee;
 	height: 20px;
 }
 
@@ -126,10 +153,11 @@ main {
 
 .word-cn {
 	flex: 2 1 0;
-	font-size: 48px;
+	font-size: 40px;
 	letter-spacing: 6px;
 }
 
+/*---------- word bank ----------*/
 #word-bank {
 	flex: 2 0 0;
 	display: flex;
@@ -138,22 +166,19 @@ main {
 	padding: 20px;
 }
 
-.level-buttons button {
-	margin: 30px;
-}
-
 .wb-pos {
 	/* dynamically update % based on number of pos */
 	flex: 0 0 50%;
 	display: flex;
 	flex-direction: column;
-	padding: 0 5px;
+	/*padding: 0 5px;*/
+	padding: 0;
 	text-align: center;
 }
 
 .wb-pos-label {
 	flex: 1 0 20px;
-	border-top: 5px solid #666;
+	border-top: 2px solid #eee;
 }
 
 .wb-tiles {
@@ -166,12 +191,13 @@ main {
 }
 
 .wb-tile {
-	flex: 1 1 100px;
+	flex: 1 1 80px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px solid #666;
-	font-size: 36px;
+	cursor: pointer;
+	border: 1px solid #eee;
+	font-size: 30px;
 	letter-spacing: 6px;
 	margin: 10px 20px;
 }
