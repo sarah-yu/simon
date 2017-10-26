@@ -240,15 +240,17 @@ $('document').ready(function() {
 			window['wb' + level.posProperty[i]] = []
 			console.log(level.posProperty[i])
 		}
-		createWBTilesRightWord(level)
+		createWBTiles(level)
 	}
 
-	function createWBTilesRightWord(level) {
+	function createWBTiles(level) {
 		console.log(`createWBTiles: still on level ${level.level}`)
+
 		for (let i = 0; i < level.pos.length; i++) {
 			let addPos = level.posProperty[i]
 			let theRightWord = theSentence[addPos]
 			console.log(`the right word is: ${theRightWord.cn}`)
+
 			// add the right word into 0 position of wb pos array
 			window['wb' + addPos][0] = theRightWord
 
@@ -259,12 +261,12 @@ $('document').ready(function() {
 				1
 			)
 			// push 3 random words to wb pos array
-			getRandomTiles(window['shuffleWb' + addPos], 3)
+			getRandomWords(window['shuffleWb' + addPos], 3)
 			for (let j = 0; j < shuffledArray.length; j++) {
 				window['wb' + addPos].push(shuffledArray[j])
 			}
 			// shuffle full wb pos array one more time
-			getRandomTiles(window['wb' + addPos], 4)
+			getRandomWords(window['wb' + addPos], 4)
 			// assign shuffled array back to wb pos array
 			window['wb' + addPos] = shuffledArray
 			// now ready for display in word bank!
@@ -272,7 +274,7 @@ $('document').ready(function() {
 		displayWBTiles(level)
 	}
 
-	function getRandomTiles(array, size) {
+	function getRandomWords(array, size) {
 		let shuffled = array.slice(0)
 		let i = array.length
 		let temp
@@ -299,6 +301,25 @@ $('document').ready(function() {
 						][j].cn}</div>`
 					)
 			}
+		}
+		userGuess(level)
+	}
+
+	function userGuess(level) {
+		for (let i = 0; i < level.pos.length; i++) {
+			let addPos = level.posProperty[i]
+			// add event listener on wb tiles by pos
+			let wbTilesByPos = `div[data-pos=${addPos}]`
+			$(wbTilesByPos).on('click', e => {
+				$(wbTilesByPos).css('visibility', 'visible')
+				$(wbTilesByPos).removeClass('active')
+
+				// user can select one tile at a time
+				$(e.target).css('visibility', 'hidden')
+				$(e.target).addClass('active')
+
+				console.log($(e.target).text())
+			})
 		}
 	}
 })
