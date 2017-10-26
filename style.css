@@ -16,6 +16,18 @@ header {
 	border-bottom: 1px solid #666;
 }
 
+ul {
+	display: flex;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+}
+
+li {
+	padding: 20px 10px;
+	width: 120px;
+}
+
 button {
 	background: #fff;
 	border: 1px solid #000;
@@ -30,24 +42,19 @@ button:hover {
 	color: #fff;
 }
 
-ul {
-	list-style: none;
-	padding: 0;
-	display: flex;
-	align-items: center;
-}
-
-li {
-	padding: 20px;
+.game-info {
+	letter-spacing: 1px;
+	text-transform: uppercase;
 }
 
 .site-logo {
 	font-size: 28px;
 	margin-left: auto;
 	margin-right: auto;
+	width: auto;
 }
 
-a {
+.site-logo a {
 	color: #000;
 	text-decoration: none;
 }
@@ -59,49 +66,44 @@ main {
 }
 
 #game-board {
-	flex: 1 1 0;
-	padding: 0 30px;
+	flex: 1 0 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	padding: 0 30px;
 }
 
 .welcome-message {
 	font-size: 40px;
 }
 
-#word-bank {
-	flex: 2 1 0;
-	padding: 20px;
-	display: flex;
-	flex-direction: row;
-	align-items: stretch;
-	justify-content: center;
-}
-
-.level-buttons button {
-	margin: 30px;
-}
-
 .the-sentence-pos {
 	flex: 0 0 25%;
-	height: 200px;
-	margin: 10px 5px;
-	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	margin: 10px 5px;
+	text-align: center;
 }
 
 .word-tile {
-	flex: 0 0 150px;
-	border: 1px solid #666;
+	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	height: 90px;
+	border: 1px solid #666;
+	height: 120px;
 	margin: 10px 0;
+}
+
+.the-sentence-pos-label,
+.wb-pos-label {
+	color: #666;
+	font-size: 14px;
+	letter-spacing: 1px;
+	padding: 10px 0;
+	text-transform: uppercase;
 }
 
 .the-sentence-pos-label {
@@ -111,9 +113,9 @@ main {
 }
 
 .word-info {
-	/*border: 1px solid black;*/
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	justify-content: center;
 }
 
@@ -128,32 +130,48 @@ main {
 	letter-spacing: 6px;
 }
 
+#word-bank {
+	flex: 2 0 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding: 20px;
+}
+
+.level-buttons button {
+	margin: 30px;
+}
+
 .wb-pos {
 	/* dynamically update % based on number of pos */
 	flex: 0 0 50%;
-	padding: 0 5px;
-	text-align: center;
 	display: flex;
 	flex-direction: column;
+	padding: 0 5px;
+	text-align: center;
 }
 
 .wb-pos-label {
-	flex: 1 1 0;
+	flex: 1 0 20px;
 	border-top: 5px solid #666;
 }
 
 .wb-tiles {
-	flex: 9 1 0;
+	flex: 9 0 0;
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
-	justify-content: space-between;
-	background: pink;
+	align-content: flex-start;
+	justify-content: center;
 }
 
 .wb-tile {
+	flex: 1 1 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	border: 1px solid #666;
-	height: 300px;
-	width: 200px;
-	margin: 20px;
+	font-size: 36px;
+	letter-spacing: 6px;
+	margin: 10px 20px;
 }

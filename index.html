@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <!--  add google font -->
     <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Simon Learns Chinese</title>
@@ -11,15 +10,17 @@
     <header>
       <ul>
         <li><button class="start-page">Start Page</button></li>
-        <li id="current-level"></li>
+        <li class="game-info" id="current-level"></li>
         <li class="site-logo start-page"><a href="#">Simon Learns Chinese</a></li>
-        <li>Score: <span id="score">0</span></li>
+        <li class="game-info">Score: <span id="score">0</span></li>
         <li><button id="reset-score">Reset Score</button></li>
       </ul>
     </header>
 
     <main>
       <section id="game-board">
+        <!-- display the sentence, divided up by part of speech (pos) -->
+
         <!-- <div class="the-sentence-pos">
           <div class="word-tile">
             <span class="word-info word-pinyin"></span>
@@ -29,11 +30,13 @@
           <div class="the-sentence-pos-label"></div>
         </div> -->
       </section>
-
       <section id="word-bank">
+        <!-- display the word bank, divided up by part of speech (pos) -->
+
         <!-- <div class="wb-pos">
           <div class="wb-pos-label"></div>
           <div class="wb-tiles">
+            <div class="wb-tile"></div>
           </div>
         </div> -->
       </section>

@@ -3,11 +3,12 @@ $('document').ready(function() {
 	let score = 0
 
 	// from the DOM
+	// let userMessage = $('#user-message')
 	let gameBoard = $('#game-board')
 	let wordBank = $('#word-bank')
 	let startPageEl = $('.start-page')
 	let resetScoreButton = $('#reset-score')
-	let currentLevelEl = $('#current-level')
+	let currentLevel = $('#current-level')
 	let scoreEl = $('#score')
 
 	// all the words
@@ -124,7 +125,7 @@ $('document').ready(function() {
 
 	startPageEl.on('click', () => {
 		clearTimeout(timeToGuess)
-		currentLevelEl.text('')
+		currentLevel.text('')
 		clearBoard()
 		removeStartPage()
 		startPage()
@@ -170,7 +171,7 @@ $('document').ready(function() {
 	function startLevel(level) {
 		// log to check correct current level
 		console.log(`startLevel: current level: ${level.level}`)
-		currentLevelEl.text(`Level: ${level.level}`)
+		currentLevel.text(`Level: ${level.level}`)
 		removeStartPage()
 		createGameBoard(level)
 	}
@@ -230,7 +231,8 @@ $('document').ready(function() {
 		timeToGuess = setTimeout(() => {
 			$('.word-tile').css('visibility', 'hidden')
 			createWordBank(level)
-		}, 3000)
+			// userMessage.text('Click on the words below to complete the sentence!')
+		}, 3500)
 	}
 
 	function createWordBank(level) {
@@ -297,6 +299,7 @@ $('document').ready(function() {
 		displayWBTiles(level)
 	}
 
+	// https://stackoverflow.com/questions/11935175/sampling-a-random-subset-from-an-array
 	function getRandomWords(array, size) {
 		let shuffled = array.slice(0)
 		let i = array.length
@@ -413,6 +416,7 @@ $('document').ready(function() {
 			console.log('user created the right sentence!')
 			score += 1
 			scoreEl.text(score)
+			// userMessage.text('Correct!')
 			clearBoard()
 			startLevel(level)
 		} else {
@@ -423,6 +427,7 @@ $('document').ready(function() {
 	function clearBoard() {
 		clearTheSentence()
 		clearUserSentence()
+		// userMessage.text('')
 		$('.the-sentence-pos').remove()
 		$('.wb-pos').remove()
 	}
