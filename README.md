@@ -2,6 +2,7 @@
 
 Simon Learns Chinese is based on the concept of the memory game, Simon, and inspired by gamified language learning apps such as Duolingo. The purpose of the game is to test the user's memory while allowing the user to gain a basic but intuitive understanding of the Chinese language through repeated exposure to simple vocabulary and grammar patterns.
 
+Play it here: https://sarah-yu.github.io/simon
 
 ## Current Features
 
@@ -26,12 +27,19 @@ Simon Learns Chinese is based on the concept of the memory game, Simon, and insp
 
 
 ## Technologies Used
+
 - HTML/CSS
 - JavaScript
 - jQuery
 
 
 ## Installation
+
 1. Fork this repository.
 2. Clone it.
 3. Open ```index.html``` in your browser.
+
+
+## Contribute
+
+Source code: https://github.com/sarah-yu/simon
