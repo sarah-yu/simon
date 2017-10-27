@@ -1,17 +1,11 @@
 $('document').ready(function() {
-	// all the variables
-	let score = 0
-
-	// from the DOM
-	// let userMessage = $('#user-message')
 	let gameBoard = $('#game-board')
 	let wordBank = $('#word-bank')
 	let startPageEl = $('.start-page')
 	let resetScoreButton = $('#reset-score')
 	let currentLevel = $('#current-level')
 	let scoreEl = $('#score')
-
-	// all the words
+	let score = 0
 	const words = []
 
 	// partOfSpeech: measureWord
@@ -96,6 +90,7 @@ $('document').ready(function() {
 	})
 
 	// organized info for each level
+	// pos = part of speech
 	let level1 = {
 		level: 1,
 		pos: [measureWords, objectWords],
@@ -123,19 +118,6 @@ $('document').ready(function() {
 	// game start page
 	startPage()
 
-	startPageEl.on('click', () => {
-		clearTimeout(timeToGuess)
-		currentLevel.text('')
-		clearBoard()
-		removeStartPage()
-		startPage()
-	})
-
-	resetScoreButton.on('click', () => {
-		score = 0
-		scoreEl.text(0)
-	})
-
 	function startPage() {
 		gameBoard.append(
 			'<div class="welcome-message"><p>Test your memory skills while learning Chinese!</p><p>Select a level to start the game.</p></div>'
@@ -150,11 +132,11 @@ $('document').ready(function() {
 			.on('click', e => {
 				let userLevel = e.target.id
 				// userLevel: level1, level2, or level3
-				startGame(userLevel)
+				game(userLevel)
 			})
 	}
 
-	function startGame(userLevel) {
+	function game(userLevel) {
 		switch (userLevel) {
 			case 'level1':
 				startLevel(level1)
@@ -169,8 +151,6 @@ $('document').ready(function() {
 	}
 
 	function startLevel(level) {
-		// log to check correct current level
-		console.log(`startLevel: current level: ${level.level}`)
 		currentLevel.text(`Level: ${level.level}`)
 		removeStartPage()
 		createGameBoard(level)
@@ -181,11 +161,8 @@ $('document').ready(function() {
 		$('.level-buttons').remove()
 	}
 
+	// create game board for the level selected by user
 	function createGameBoard(level) {
-		console.log(
-			`createGameBoard: this is level ${level.level} and there's ${level.pos
-				.length} pos`
-		)
 		for (let i = 0; i < level.pos.length; i++) {
 			gameBoard.append(`<div class="the-sentence-pos"></div>`)
 			$('.the-sentence-pos')
@@ -198,24 +175,22 @@ $('document').ready(function() {
 	}
 
 	function createTheSentence(level) {
-		console.log(
-			`createTheSentence: level ${level.level} successfully carried over!`
-		)
 		for (let i = 0; i < level.pos.length; i++) {
 			let addPos = level.posProperty[i]
 			theSentence[addPos] = getWord(level.pos[i])
-			console.log(`createTheSentence ${i}: ${theSentence[addPos].cn}`)
+			// console.log(`createTheSentence ${i}: ${theSentence[addPos].cn}`)
 		}
-		createWordTiles(level)
+		displayTheSentence(level)
 	}
 
-	// generate random word for sentence creation
+	// get a random word for creating the challenge sentence ("The Sentence")
 	function getWord(array) {
 		let i = Math.floor(Math.random() * array.length)
 		return array[i]
 	}
 
-	function createWordTiles(level) {
+	// display The Sentence on the game board
+	function displayTheSentence(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let addPos = level.posProperty[i]
 			$('.the-sentence-pos').eq([i]).prepend(`<div class="word-tile">
@@ -224,22 +199,25 @@ $('document').ready(function() {
 				<span class="word-info word-en">${theSentence[addPos].en}</span>
 				</div>`)
 		}
-		hideWordTiles(level)
+		hideTheSentence(level)
 	}
 
-	function hideWordTiles(level) {
+	// hide The Sentence after x seconds
+	function hideTheSentence(level) {
 		timeToGuess = setTimeout(() => {
 			$('.word-tile').css('visibility', 'hidden')
 			createWordBank(level)
-			// userMessage.text('Click on the words below to complete the sentence!')
-		}, 3500)
+			promptUser()
+		}, 5000)
+	}
+
+	function promptUser() {
+		$('#user-message').text(
+			'(Click on the words below to complete the sentence)'
+		)
 	}
 
 	function createWordBank(level) {
-		console.log(
-			`createWordBank: creating word bank for level ${level.level} now`
-		)
-
 		for (let i = 0; i < level.pos.length; i++) {
 			wordBank.append(`<div class="wb-pos">
 			<div class="wb-pos-label">${level.posWBLabel[i]}</div>
@@ -247,7 +225,7 @@ $('document').ready(function() {
 			$('.wb-pos-label').append('<div class="wb-tiles"></div>')
 		}
 
-		// format word bank columns
+		// set widths for word bank columns
 		if (level.level === 2) {
 			$('.wb-pos').css('flex', '0 0 33.33%')
 		} else if (level.level === 3) {
@@ -256,45 +234,46 @@ $('document').ready(function() {
 		createWBArr(level)
 	}
 
+	// generate random answer choices for the word bank
 	function createWBArr(level) {
-		console.log(
-			`createWBTiles: creating word bank tiles for level ${level.level}`
-		)
+		// console.log(
+		// 	`createWBArr: creating word bank tiles for level ${level.level}`
+		// )
 		for (let i = 0; i < level.pos.length; i++) {
-			// create arrays to hold word bank tiles by pos
+			// create an array for each part of speech to store random answer choices
 			window['wb' + level.posProperty[i]] = []
-			console.log(level.posProperty[i])
+			// console.log(level.posProperty[i])
 		}
-		createWBTiles(level)
+		fillWBArr(level)
 	}
 
-	function createWBTiles(level) {
-		console.log(`createWBTiles: still on level ${level.level}`)
-
+	// fill arrays with random answer choices
+	function fillWBArr(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let addPos = level.posProperty[i]
 			let theRightWord = theSentence[addPos]
 			console.log(`the right word is: ${theRightWord.cn}`)
 
-			// add the right word into 0 position of wb pos array
+			// add the right word into index 0 of array
 			window['wb' + addPos][0] = theRightWord
 
-			// slice the right from word from the pos array
+			// create copy of the original part of speech array
+			// splice out the right word
 			window['shuffleWb' + addPos] = level.pos[i].slice()
 			window['shuffleWb' + addPos].splice(
 				window['shuffleWb' + addPos].indexOf(theRightWord),
 				1
 			)
-			// push 3 random words to wb pos array
+			// push 3 random words to the array
 			getRandomWords(window['shuffleWb' + addPos], 3)
 			for (let j = 0; j < shuffledArray.length; j++) {
 				window['wb' + addPos].push(shuffledArray[j])
 			}
-			// shuffle full wb pos array one more time
+			// shuffle full array so that the right word is not index 0
 			getRandomWords(window['wb' + addPos], 4)
-			// assign shuffled array back to wb pos array
+			// assign shuffled array back to the word bank array
 			window['wb' + addPos] = shuffledArray
-			// now ready for display in word bank!
+			// now ready for display in word bank
 		}
 		displayWBTiles(level)
 	}
@@ -315,6 +294,7 @@ $('document').ready(function() {
 		return shuffledArray
 	}
 
+	// display random answer choices in the word bank, categorized by part of speech
 	function displayWBTiles(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let addPos = level.posProperty[i]
@@ -331,11 +311,12 @@ $('document').ready(function() {
 		userGuess(level)
 	}
 
+	// user clicks on words in the word bank to try and build The Sentence they just saw
 	function userGuess(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let addPos = level.posProperty[i]
-			// add event listener on wb tiles by pos
 			let wbTilesByPos = `div[data-pos=${addPos}]`
+			// add event listener on word bank tiles by part of speech
 			$(wbTilesByPos).on('click', e => {
 				$('.word-tile').css('visibility', 'hidden')
 				$(wbTilesByPos).css('visibility', 'visible')
@@ -346,26 +327,26 @@ $('document').ready(function() {
 				$(e.target).addClass('active')
 
 				// check if click is grabbing the right tile and info
-				console.log($(e.target).text())
+				// console.log($(e.target).text())
 				// console.log($(e.target).data('pos'))
 				// console.log(`wb${$(e.target).data('pos')}`)
 
-				// via data-pos, access array corresponding to pos of user clicked word
+				// via data-pos attribute, access array corresponding to the part of speech of word clicked by user
 				// find word object the clicked tile belongs to
 				let userClickWord = $(e.target).text()
 				let userClickWordPos = $(e.target).data('pos')
-				console.log(`userClickWordPos: ${userClickWordPos}`)
-				console.log(window['wb' + userClickWordPos])
+				// console.log(`userClickWordPos: ${userClickWordPos}`)
+				// console.log(window['wb' + userClickWordPos])
 
-				let whereToDisplay = level.posProperty.indexOf(userClickWordPos)
-				console.log(`where to display: ${whereToDisplay} (${userClickWordPos})`)
 				// display user's guess on game board
+				let whereToDisplay = level.posProperty.indexOf(userClickWordPos)
+				// console.log(`where to display: ${whereToDisplay} (${userClickWordPos})`)
 				$('.word-cn')
 					.eq(whereToDisplay)
 					.css('visibility', 'visible')
 					.text(userClickWord)
 
-				// filter through the corresponding array to for the clicked word object
+				// filter through the corresponding array for the clicked word object
 				findUserClickWord = window['wb' + userClickWordPos].filter(word => {
 					return word.cn === userClickWord
 				})
@@ -413,21 +394,25 @@ $('document').ready(function() {
 			count += 1
 		}
 		if (count === level.pos.length) {
-			console.log('user created the right sentence!')
+			console.log('user created the right sentence')
 			score += 1
 			scoreEl.text(score)
-			// userMessage.text('Correct!')
-			clearBoard()
-			startLevel(level)
+			$('#user-message').text('You got it! +1 Point')
+			let correctAnswer = setTimeout(() => {
+				clearBoard()
+				startLevel(level)
+			}, 1500)
 		} else {
 			console.log('user must try again')
 		}
 	}
 
+	function correctAnswer() {}
+
 	function clearBoard() {
 		clearTheSentence()
 		clearUserSentence()
-		// userMessage.text('')
+		$('#user-message').text('')
 		$('.the-sentence-pos').remove()
 		$('.wb-pos').remove()
 	}
@@ -439,4 +424,17 @@ $('document').ready(function() {
 	function clearUserSentence() {
 		userSentence = new Sentence()
 	}
+
+	startPageEl.on('click', () => {
+		clearTimeout(timeToGuess)
+		currentLevel.text('')
+		clearBoard()
+		removeStartPage()
+		startPage()
+	})
+
+	resetScoreButton.on('click', () => {
+		score = 0
+		scoreEl.text(0)
+	})
 })
