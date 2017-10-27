@@ -23,7 +23,7 @@ Play it here: https://sarah-yu.github.io/simon
 
 ## Unsolved Problems
 
-- A clearTimeout reference error occurs if the user clicks the "Start Page" button or site logo before playing any of the levels. The functionality of the game is not compromised, but I was not able to resolve this issue.
+- A clearTimeout reference error occurs if the user clicks the "Start Page" button before playing any of the levels. The functionality of the game is not compromised, but I was not able to resolve this issue.
 - The game is not fully responsive as there are many layout issues when the browser is resized (I used flexbox).
 - In general, I would like to spend more time refactoring and abstracting my code. I think my current logic is pretty convoluted and not a very robust solution.
 - I was not able to implement a "try again" message for incorrect attempts. As a Silver feature, I would also like to be able to give the user a hint as to which part of speech was incorrect.
