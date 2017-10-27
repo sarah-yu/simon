@@ -4,11 +4,15 @@ Simon Learns Chinese is based on the concept of the memory game, Simon, and insp
 
 Play it here: https://sarah-yu.github.io/simon
 
+
 ## Current Features
 
 - User can choose a level (1, 2, 3) to play.
 - User is given a sentence that is broken down into the parts of speech that compose it (i.e. subject, verb, object).
 - The complexity of the sentence (how many parts of speech it has) increases with level.
+  - Level 1: 2 parts of speech (measure word, object)
+  - Level 2: 3 parts of speech (subject, verb, object)
+  - Level 3: 4 parts of speech (subject, verb, adjective, object)
 - User is shown the sentence for 5 seconds.
 - After the sentence disappears, user must recreate the sentence from memory by selecting the correct words from the word bank.
 - If the user is correct, then the next sentence will appear.
