@@ -70,11 +70,6 @@ header button:hover {
 	width: auto;
 }
 
-.site-logo a {
-	color: #3a3a3b;
-	text-decoration: none;
-}
-
 /*---------- main ----------*/
 main {
 	flex: 1 0 auto;
