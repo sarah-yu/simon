@@ -161,6 +161,9 @@ $('document').ready(function() {
 		currentLevel.text(`Level: ${level.level}`)
 		removeStartPage()
 		createGameBoard(level)
+		createTheSentence(level)
+		displayTheSentence(level)
+		hideTheSentence(level)
 	}
 
 	function removeStartPage() {
@@ -178,7 +181,6 @@ $('document').ready(function() {
 					`<div class="the-sentence-pos-label">${level.posGBLabel[i]}</div>`
 				)
 		}
-		createTheSentence(level)
 	}
 
 	function createTheSentence(level) {
@@ -186,7 +188,6 @@ $('document').ready(function() {
 			let ptOfSpeech = level.posProperty[i]
 			theSentence[ptOfSpeech] = getWord(level.pos[i])
 		}
-		displayTheSentence(level)
 	}
 
 	// get a random word for creating the challenge sentence ("The Sentence")
@@ -207,7 +208,6 @@ $('document').ready(function() {
 					<span class="word-info word-en">${theSentence[ptOfSpeech].en}</span>
 				</div>`)
 		}
-		hideTheSentence(level)
 	}
 
 	// hide The Sentence after 5 seconds
@@ -297,7 +297,6 @@ $('document').ready(function() {
 		return shuffledArray
 	}
 
-	// display random answer choices in the word bank, categorized by part of speech
 	function displayWBTiles(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let ptOfSpeech = level.posProperty[i]
@@ -314,80 +313,72 @@ $('document').ready(function() {
 		userGuess(level)
 	}
 
-	// user clicks on words in the word bank to try and build The Sentence they just saw
 	function userGuess(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let ptOfSpeech = level.posProperty[i]
 			let wbTilesByPos = `div[data-pos=${ptOfSpeech}]`
 
-			// add event listener on word bank tiles by part of speech
 			$(wbTilesByPos).on('click', e => {
 				$('.word-tile').css('visibility', 'hidden')
 				$(wbTilesByPos).css('visibility', 'visible')
 				$(wbTilesByPos).removeClass('active')
-
-				// user can select one tile at a time
 				$(e.target).css('visibility', 'hidden')
 				$(e.target).addClass('active')
 
-				// using data-pos attribute, access array corresponding to the part of speech of word clicked by user
-				// find word object the clicked tile belongs to
 				let userClickWord = $(e.target).text()
 				let userClickWordPos = $(e.target).data('pos')
-				// console.log(`userClickWordPos: ${userClickWordPos}`)
+				let wordToAdd = null
 
-				// display user's guess on game board
+				for (let i = 0; i < words.length; i++) {
+					if (words[i].cn === userClickWord) {
+						wordToAdd = words[i]
+						break
+					}
+				}
+
 				let whereToDisplay = level.posProperty.indexOf(userClickWordPos)
-				// console.log(`where to display: ${whereToDisplay} (${userClickWordPos})`)
+
 				$('.word-cn')
 					.eq(whereToDisplay)
 					.css('visibility', 'visible')
-					.text(userClickWord)
+					.text(wordToAdd.cn)
 
-				// filter through the corresponding array for the clicked word object
-				findUserClickWord = window['wb' + userClickWordPos].filter(word => {
-					return word.cn === userClickWord
-				})
-				// console.log(`findUserClickWord: ${findUserClickWord}`)
-
-				// add the word to userSentence
-				userSentence[userClickWordPos] = findUserClickWord
+				userSentence[wordToAdd.partOfSpeech] = wordToAdd
 
 				checkSentence(level)
 			})
 		}
 	}
 
-	// check userSentence against theSentence
 	function checkSentence(level) {
 		let count = 0
 		if (
 			userSentence.measureWord !== undefined &&
-			userSentence.measureWord[0] === theSentence.measureWord
+			userSentence.measureWord === theSentence.measureWord
 		) {
 			count += 1
 		}
 		if (
 			userSentence.subject !== undefined &&
-			userSentence.subject[0] === theSentence.subject
+			userSentence.subject === theSentence.subject
 		) {
 			count += 1
 		}
 		if (
 			userSentence.verb !== undefined &&
-			userSentence.verb[0] === theSentence.verb
+			userSentence.verb === theSentence.verb
 		) {
 			count += 1
 		}
 		if (
 			userSentence.adjective !== undefined &&
-			userSentence.adjective[0] === theSentence.adjective
+			userSentence.adjective === theSentence.adjective
 		) {
 			count += 1
 		}
 		if (
 			userSentence.object !== undefined &&
-			userSentence.object[0] === theSentence.object
+			userSentence.object === theSentence.object
 		) {
 			count += 1
 		}
@@ -396,7 +387,6 @@ $('document').ready(function() {
 			score += 1
 			scoreEl.text(score)
 			$('#user-message').text('You got it! +1 Point')
-			// show correct answer message before moving on to next sentence
 			let correctAnswer = setTimeout(() => {
 				clearBoard()
 				startLevel(level)
@@ -407,18 +397,18 @@ $('document').ready(function() {
 	}
 
 	function clearBoard() {
-		clearTheSentence()
-		clearUserSentence()
+		newTheSentence()
+		newUserSentence()
 		$('#user-message').text('')
 		$('.the-sentence-pos').remove()
 		$('.wb-pos').remove()
 	}
 
-	function clearTheSentence() {
+	function newTheSentence() {
 		theSentence = new Sentence()
 	}
 
-	function clearUserSentence() {
+	function newUserSentence() {
 		userSentence = new Sentence()
 	}
 
