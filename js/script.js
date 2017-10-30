@@ -115,7 +115,6 @@ $('document').ready(function() {
 		posWBLabel: ['subject words', 'verbs', 'adjectives', 'object words']
 	}
 
-	// game start page
 	startPage()
 
 	function startPage() {
@@ -136,13 +135,11 @@ $('document').ready(function() {
 		$('.level-buttons')
 			.children()
 			.on('click', e => {
-				// user selects level
 				let userLevel = e.target.id
 				game(userLevel)
 			})
 	}
 
-	// initiate game according to level selected by user
 	function game(userLevel) {
 		switch (userLevel) {
 			case 'level1':
@@ -171,7 +168,6 @@ $('document').ready(function() {
 		$('.level-buttons').remove()
 	}
 
-	// create game board for the level selected by user
 	function createGameBoard(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			gameBoard.append(`<div class="the-sentence-pos"></div>`)
@@ -190,13 +186,11 @@ $('document').ready(function() {
 		}
 	}
 
-	// get a random word for creating the challenge sentence ("The Sentence")
 	function getWord(array) {
 		let i = Math.floor(Math.random() * array.length)
 		return array[i]
 	}
 
-	// display The Sentence on the game board
 	function displayTheSentence(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let ptOfSpeech = level.posProperty[i]
@@ -210,7 +204,6 @@ $('document').ready(function() {
 		}
 	}
 
-	// hide The Sentence after 5 seconds
 	function hideTheSentence(level) {
 		$('#user-message').text('You have 5 seconds to study the following:')
 		timeToGuess = setTimeout(() => {
@@ -235,7 +228,6 @@ $('document').ready(function() {
 			$('.wb-pos-label').append('<div class="wb-tiles"></div>')
 		}
 
-		// set widths for word bank columns
 		if (level.level === 2) {
 			$('.wb-pos').css('flex', '0 0 33.33%')
 		} else if (level.level === 3) {
@@ -244,7 +236,6 @@ $('document').ready(function() {
 		createWBArr(level)
 	}
 
-	// create an array for each part of speech to store random answer choices
 	function createWBArr(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			window['wb' + level.posProperty[i]] = []
@@ -351,39 +342,7 @@ $('document').ready(function() {
 	}
 
 	function checkSentence(level) {
-		let count = 0
-		if (
-			userSentence.measureWord !== undefined &&
-			userSentence.measureWord === theSentence.measureWord
-		) {
-			count += 1
-		}
-		if (
-			userSentence.subject !== undefined &&
-			userSentence.subject === theSentence.subject
-		) {
-			count += 1
-		}
-		if (
-			userSentence.verb !== undefined &&
-			userSentence.verb === theSentence.verb
-		) {
-			count += 1
-		}
-		if (
-			userSentence.adjective !== undefined &&
-			userSentence.adjective === theSentence.adjective
-		) {
-			count += 1
-		}
-		if (
-			userSentence.object !== undefined &&
-			userSentence.object === theSentence.object
-		) {
-			count += 1
-		}
-		if (count === level.pos.length) {
-			console.log('user created the right sentence')
+		if (theSentence.isEqual(userSentence)) {
 			score += 1
 			scoreEl.text(score)
 			$('#user-message').text('You got it! +1 Point')
@@ -391,8 +350,6 @@ $('document').ready(function() {
 				clearBoard()
 				startLevel(level)
 			}, 1500)
-		} else {
-			console.log('user must try again')
 		}
 	}
 
