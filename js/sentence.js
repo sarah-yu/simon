@@ -24,30 +24,30 @@ class Sentence {
 	}
 
 	isEqual(userSentence) {
-		let myResult = false
+		let theResult = false
 
 		if (this.isLevel1SentenceComplete()) {
-			myResult =
+			theResult =
 				userSentence.measureWord.cn === theSentence.measureWord.cn &&
 				userSentence.object.cn === theSentence.object.cn
 		}
 
 		if (this.isLevel2SentenceComplete()) {
-			myResult =
+			theResult =
 				userSentence.subject.cn === theSentence.subject.cn &&
 				userSentence.verb.cn === theSentence.verb.cn &&
 				userSentence.object.cn === theSentence.object.cn
 		}
 
 		if (this.isLevel3SentenceComplete()) {
-			myResult =
+			theResult =
 				userSentence.subject.cn === theSentence.subject.cn &&
 				userSentence.verb.cn === theSentence.verb.cn &&
 				userSentence.adjective.cn === theSentence.adjective.cn &&
 				userSentence.object.cn === theSentence.object.cn
 		}
 
-		return myResult
+		return theResult
 	}
 }
 
