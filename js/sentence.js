@@ -7,11 +7,11 @@ class Sentence {
 		this.object = object
 	}
 
-	isLevel1SentenceComplete() {
+	checkLevelOneSentence() {
 		return userSentence.measureWord != null && userSentence.object != null
 	}
 
-	isLevel2SentenceComplete() {
+	checkLevelTwoSentence() {
 		return (
 			userSentence.subject != null &&
 			userSentence.verb != null &&
@@ -19,35 +19,35 @@ class Sentence {
 		)
 	}
 
-	isLevel3SentenceComplete() {
-		return this.isLevel2SentenceComplete() && userSentence.adjective != null
+	checkLevelThreeSentence() {
+		return this.checkLevelTwoSentence() && userSentence.adjective != null
 	}
 
 	isEqual(userSentence) {
-		let theResult = false
+		let correct = false
 
-		if (this.isLevel1SentenceComplete()) {
-			theResult =
+		if (this.checkLevelOneSentence()) {
+			correct =
 				userSentence.measureWord.cn === theSentence.measureWord.cn &&
 				userSentence.object.cn === theSentence.object.cn
 		}
 
-		if (this.isLevel2SentenceComplete()) {
-			theResult =
+		if (this.checkLevelTwoSentence()) {
+			correct =
 				userSentence.subject.cn === theSentence.subject.cn &&
 				userSentence.verb.cn === theSentence.verb.cn &&
 				userSentence.object.cn === theSentence.object.cn
 		}
 
-		if (this.isLevel3SentenceComplete()) {
-			theResult =
+		if (this.checkLevelThreeSentence()) {
+			correct =
 				userSentence.subject.cn === theSentence.subject.cn &&
 				userSentence.verb.cn === theSentence.verb.cn &&
 				userSentence.adjective.cn === theSentence.adjective.cn &&
 				userSentence.object.cn === theSentence.object.cn
 		}
 
-		return theResult
+		return correct
 	}
 }
 

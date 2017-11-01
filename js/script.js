@@ -8,7 +8,6 @@ $('document').ready(function() {
 	let score = 0
 	const words = []
 
-	// partOfSpeech: measureWord
 	words.push(yiGe)
 	words.push(liangGe)
 	words.push(sanGe)
@@ -19,8 +18,6 @@ $('document').ready(function() {
 	words.push(baGe)
 	words.push(jiuGe)
 	words.push(shiGe)
-
-	// partOfSpeech: subject
 	words.push(wo)
 	words.push(ni)
 	words.push(ta)
@@ -31,8 +28,6 @@ $('document').ready(function() {
 	words.push(baBa)
 	words.push(woDeMao)
 	words.push(woDeGou)
-
-	// partOfSpeech: verb
 	words.push(xiHuan)
 	words.push(buXiHuan)
 	words.push(yao)
@@ -43,8 +38,6 @@ $('document').ready(function() {
 	words.push(buMai)
 	words.push(chi)
 	words.push(buChi)
-
-	// partOfSpeech: adjective
 	words.push(xinXianDe)
 	words.push(haoChiDe)
 	words.push(daDe)
@@ -55,8 +48,6 @@ $('document').ready(function() {
 	words.push(xianDe)
 	words.push(reDe)
 	words.push(liangDe)
-
-	// partOfSpeech: object
 	words.push(pingGuo)
 	words.push(xiangJiao)
 	words.push(juZi)
@@ -68,7 +59,6 @@ $('document').ready(function() {
 	words.push(huangGua)
 	words.push(hanBaoBao)
 
-	// filtered arrays of words of each partOfSpeech
 	const measureWords = words.filter(word => {
 		return word.partOfSpeech === 'measureWord'
 	})
@@ -89,8 +79,6 @@ $('document').ready(function() {
 		return word.partOfSpeech === 'adjective'
 	})
 
-	// organized info for each level
-	// pos = part of speech
 	let level1 = {
 		level: 1,
 		pos: [measureWords, objectWords],
@@ -243,31 +231,27 @@ $('document').ready(function() {
 		fillWBArr(level)
 	}
 
-	// fill arrays with random answer choices
 	function fillWBArr(level) {
 		for (let i = 0; i < level.pos.length; i++) {
 			let ptOfSpeech = level.posProperty[i]
 			let theRightWord = theSentence[ptOfSpeech]
-			// console.log(`the right word is: ${theRightWord.cn}`)
 
-			// add the right word into index 0 of array
 			window['wb' + ptOfSpeech][0] = theRightWord
-			// couldn't figure out how to get 3 random unique words from array that doesn't include the right word so i created a copy of the original part of speech array and spliced out the right word
 			window['shuffleWb' + ptOfSpeech] = level.pos[i].slice()
 			window['shuffleWb' + ptOfSpeech].splice(
 				window['shuffleWb' + ptOfSpeech].indexOf(theRightWord),
 				1
 			)
-			// push 3 random words to the array
+
 			getRandomWords(window['shuffleWb' + ptOfSpeech], 3)
+
 			for (let j = 0; j < shuffledArray.length; j++) {
 				window['wb' + ptOfSpeech].push(shuffledArray[j])
 			}
-			// shuffle full array so that the right word is not index 0
+
 			getRandomWords(window['wb' + ptOfSpeech], 4)
-			// assign shuffled array back to the word bank array
+
 			window['wb' + ptOfSpeech] = shuffledArray
-			// ready for display in word bank
 		}
 		displayWBTiles(level)
 	}
